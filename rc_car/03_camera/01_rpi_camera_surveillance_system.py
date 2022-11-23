@@ -37,7 +37,7 @@ class StreamingOutput(object):
                 self.frame = self.buffer.getvalue()
                 self.condition.notify_all()
             self.buffer.seek(0)
-            print(buf)
+            #print(buf)
         return self.buffer.write(buf)
 
 
@@ -94,6 +94,7 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
+        print(output)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     finally:

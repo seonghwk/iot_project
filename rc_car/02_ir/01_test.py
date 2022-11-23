@@ -3,7 +3,6 @@ from time import sleep
 
 from lirc import RawConnection
 
-cnt = 0;
 def ProcessIRRemote():
 
     # get IR command
@@ -14,8 +13,6 @@ def ProcessIRRemote():
         keypress = ""
 
     if (keypress != "" and keypress != None):
-        global cnt
-        cnt += 1
         data = keypress.split()
         sequence = data[1]
         command = data[2]
@@ -24,17 +21,17 @@ def ProcessIRRemote():
         # if (sequence != "00"):
         #     return
         if (command == "KEY_UP"):
-            CAR_CMD.go()
+            CAR_CMD.GO()
         if (command == "KEY_DOWN"):
-            CAR_CMD.back()
+            CAR_CMD.BACK()
         if (command == "KEY_LEFT"):
-            CAR_CMD.steer_left()
+            CAR_CMD.LEFT()
         if (command == "KEY_RIGHT"):
-            CAR_CMD.steer_right()
+            CAR_CMD.RIGHT()
         if (command == "KEY_OK"):
-            CAR_CMD.steer_center()
+            CAR_CMD.MIDDLE()
         if (command == "KEY_POWER"):
-            CAR_CMD.stop()
+            CAR_CMD.STOP()
 
         print(command)
 
@@ -44,8 +41,6 @@ conn = RawConnection()
 print("Starting Up...")
 try:
     while True:
-        if cnt > 1000:
-            break
         ProcessIRRemote()
 
 finally:

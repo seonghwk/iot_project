@@ -75,13 +75,13 @@ def stop():
     myMotor.run(Raspi_MotorHAT.RELEASE)
 
 def left():
-    pwm.setPWM(0, 0, 330)
+    pwm.setPWM(0, 0, 280)
 
 def mid():
-    pwm.setPWM(0, 0, 370)
+    pwm.setPWM(0, 0, 380)
 
 def right():
-    pwm.setPWM(0, 0, 440)
+    pwm.setPWM(0, 0, 450)
 
 #init
 db = mysql.connector.connect(host='52.78.179.144', user='seonghwk', password='1234', database='minDB', auth_plugin='mysql_native_password')

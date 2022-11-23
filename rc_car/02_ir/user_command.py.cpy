@@ -34,27 +34,4 @@ def STOP():
 
 def MIDDLE():
     servo.setPWM(0, 0, 380)
-
-
-"""
-try:
-    while True:
-        command = input('command : ')
-        if command == '1':
-            GO()
-        if command == '2':
-            LEFT()
-        if command == '3':
-            RIGHT()
-        if command == '4':
-            BACK()
-        if command == '5':
-            STOP()
-        if command == '6':
-            MIDDLE()
-        if command == 'exit':
-            break
-
-finally:
-    myMotor.run(Raspi_MotorHAT.RELEASE)
-"""
+    
