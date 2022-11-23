@@ -1,6 +1,5 @@
 import user_command as CAR_CMD
 from time import sleep
-
 from lirc import RawConnection
 
 def ProcessIRRemote():
@@ -9,8 +8,12 @@ def ProcessIRRemote():
     # keypress format = (hexcode, repeat_num, command_key, remote_id)
     try:
         keypress = conn.readline(.0001)
+
     except:
         keypress = ""
+    
+    if (keypress == None):
+        print("no")
 
     if (keypress != "" and keypress != None):
         data = keypress.split()

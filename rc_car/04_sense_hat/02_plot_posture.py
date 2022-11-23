@@ -1,6 +1,9 @@
 import time
 from sense_hat import SenseHat
 import numpy as np
+from datetime import datetime
+from csv import writer
+
 import matplotlib.pyplot as plt
 
 sense = SenseHat()
@@ -8,7 +11,7 @@ plt.style.use('ggplot') # matplotlib visual style setting
 
 time.sleep(1) # wait for mpu9250 sensor to settle
 
-ii = 1000 # number of points
+ii = 300 # number of points
 t1 = time.time() # for calculating sample rate
 
 # prepping for visualization
@@ -16,26 +19,30 @@ mpu6050_str = ['accel-x','accel-y','accel-z','gyro-x','gyro-y','gyro-z']
 AK8963_str = ['mag-x','mag-y','mag-z']
 mpu6050_vec,AK8963_vec,t_vec = [],[],[]
 
-print('recording data')
-for ii in range(0,ii):
+with open('data.csv', 'w', newline='') as f:
+    data_writer = writer(f)
+    data_writer.writerow(['acc_x','acc_y', 'acc_z', 'roll','pitch','yaw', 'datetime'])
+
+    print('recording data')
+    for ii in range(0,ii):
     
-    try:
-        acceleration = sense.get_accelerometer_raw()
-        orientation = sense.get_orientation()
-        ax = acceleration['x']
-        ay = acceleration['y']
-        az = acceleration['z']
-        wx = orientation['roll']
-        wy = orientation['pitch']
-        wz = orientation['yaw']
-        
+        try:
+            acceleration = sense.get_accelerometer_raw()
+            orientation = sense.get_orientation()
+            ax = acceleration['x']
+            ay = acceleration['y']
+            az = acceleration['z']
+            wx = orientation['roll']
+            wy = orientation['pitch']
+            wz = orientation['yaw']
+            data_writer.writerow([ax, ay, az, wx, wy, wz, datetime.now()])
         #ax,ay,az,wx,wy,wz = mpu6050_conv() # read and convert mpu6050 data
         #mx,my,mz = AK8963_conv() # read and convert AK8963 magnetometer data
-    except:
-        continue
-    t_vec.append(time.time()) # capture timestamp
-    #AK8963_vec.append([mx,my,mz])
-    mpu6050_vec.append([ax,ay,az,wx,wy,wz])
+        except:
+            continue
+        t_vec.append(time.time()) # capture timestamp
+        #AK8963_vec.append([mx,my,mz])
+        mpu6050_vec.append([ax,ay,az,wx,wy,wz])
 
 print('sample rate accel: {} Hz'.format(ii/(time.time()-t1))) # print the sample rate
 t_vec = np.subtract(t_vec,t_vec[0])

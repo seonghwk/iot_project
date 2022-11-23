@@ -15,16 +15,23 @@ def rx_and_echo():
         data = sock.recv(buf_size)
         if data:
             command = data.decode('utf-8').split("|")
-            print(command)
+            #print(command)
             velVal = int(command[0].split(":")[1])
             dirVal = int(command[1].split(":")[1])
             #print(velVal, dirVal)
-            motor.setSpeed(abs(velVal))
-            if (velVal < 0):
+            if (velVal < -14):
+                velVal = (velVal + 14) / 241 * 255
                 motor.run(Raspi_MotorHAT.BACKWARD)
             else:
+                velVal = (velVal + 14) / 269 * 255
                 motor.run(Raspi_MotorHAT.FORWARD)
-            servo.setPWM(0,0,dirVal)
+            motor.setSpeed(abs(int(velVal)))
+            if (dirVal < 358):
+                dirVal = (dirVal - 358) / 78 * 100 + 380
+            else:
+                dirVal = (dirVal - 358) / 92 * 70 + 380
+            servo.setPWM(0,0,int(dirVal))
+            print(f"Vel:{velVal}, Dir:{dirVal}")
             sock.send(data)
             
 #MAC address of ESP32

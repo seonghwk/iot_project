@@ -11,7 +11,8 @@ sense = SenseHat()
 sense.set_imu_config(True, True, True)  # accelerometer, magnetometer , gyroscope
 sense.clear()
 
-logging = False
+logging = True
+cnt = 0
 
 def get_sense_data():
   sense_data = []
@@ -62,8 +63,8 @@ def pushed_down(event):
     print("STOP")
     logging = False
 
-sense.stick.direction_up = pushed_up
-sense.stick.direction_down = pushed_down
+#sense.stick.direction_up = pushed_up
+#sense.stick.direction_down = pushed_down
 
 timestamp = datetime.now()
 timestart = datetime.now()
@@ -87,4 +88,7 @@ with open('data.csv', 'w', newline='') as f:
         data.append(round(elapsed.total_seconds()*1000))
         data_writer.writerow(data)
         timestamp = datetime.now()
+        cnt += 1
+        if cnt > 1000:
+            break
 
